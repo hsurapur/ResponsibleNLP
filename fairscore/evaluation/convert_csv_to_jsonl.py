@@ -24,11 +24,14 @@ def main():
         help="File to write .jsonl output"
     )
     args = parser.parse_args()
+
     gender_tasks = []
-    with open(args.csv_file) as csvfile:
+    with open(args.csv_file, newline='') as csvfile:
         reader = csv.DictReader(csvfile, delimiter="|")
         for row in reader:
-            if (row["original_category"] == "Male" or row["original_category"] == "Female") and (row["perturbed_category"] == "Male" or row["perturbed_category"] == "Female"):
+            original_category = row["original_category"]
+            perturbed_category = row["perturbed_category"]
+            if (original_category in ["Male", "Female"]) and (perturbed_category in ["Male", "Female"]):
                 augly_dict = {
                     "uid": row["worker_id"],
                     "original": row["original"],
